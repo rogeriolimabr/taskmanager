@@ -64,9 +64,7 @@ task_manager/
    ```
 
 3. Acesse a aplicação:
-   - A API backend estará disponível em `http://localhost:8000`.
-   - O Frontend estará disponível em `http://localhost:3000`.
-   - O banco de dados estará disponível na porta :1337, somente para o backend.
+   - A aplicação estará disponível em `http://localhost:80`.
 
 ## Endpoints da API
 
