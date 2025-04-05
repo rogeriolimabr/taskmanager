@@ -1,0 +1,49 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8000:80"
+    depends_on:
+      - db
+    env_file:
+      - ./backend/.env
+    networks:
+      - internal
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:3000"
+    depends_on:
+      - backend
+    env_file:
+      - ./frontend/.env
+    networks:
+      - internal
+      - external
+    restart: unless-stopped
+
+  db:
+    image: postgres:latest
+    container_name: db
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - internal
+    restart: unless-stopped
+
+networks:
+  internal:
+    internal: true
+  external:
+    external: true
+
+volumes:
+  postgres_data:
