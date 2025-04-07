@@ -19,7 +19,17 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    title="Gerenciador de Tarefas",
+    description="Backend para o gerenciador de tarefas",
+    redoc_url="/documentation",
+    version="1.0.0",
+    contact={
+        "name": "Rogerio Lima",
+        "email": "me@rogeriolima.io",
+    },
+    lifespan=lifespan
+)
 
 # Configure CORS
 origins = [
@@ -95,9 +105,9 @@ def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(da
     db_task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == current_user.id).first()
     if db_task is None:
         raise HTTPException(status_code=404, detail="Task not found")
-    db_task.title = task.title
-    db_task.description = task.description
-    if task.status == "COMPLETED":
+    db_task.title = task.title if task.title else db_task.title
+    db_task.description = task.description if task.description else db_task.description
+    if task.status == schemas.TaskStatus.COMPLETED:
         db_task.completed_at = datetime.astimezone(datetime.now())
         db_task.status = task.status
     db.commit()

@@ -1,6 +1,11 @@
 from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 from datetime import datetime
+from enum import Enum
+
+class TaskStatus(Enum):
+    PENDING = 'pending'
+    COMPLETED = 'completed'
 
 class TaskBase(BaseModel):
     title: str
@@ -9,11 +14,19 @@ class TaskBase(BaseModel):
 class TaskCreate(TaskBase):
     pass
 
+class TaskUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    status: TaskStatus
+
+    class ConfigDict:
+        use_enum_values = True
+
 class Task(TaskBase):
     id: int
     created_at: datetime
     completed_at: Optional[datetime] = None
-    status: str
+    status: TaskStatus
     owner_id: int
 
     class ConfigDict:

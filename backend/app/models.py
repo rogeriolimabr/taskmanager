@@ -1,5 +1,7 @@
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Enum
 from sqlalchemy.orm import relationship
+
+from .schemas import TaskStatus
 from .database import Base
 from datetime import datetime
 
@@ -23,7 +25,7 @@ class Task(Base):
     description = Column(String, index=True)
     created_at = Column(DateTime, default=datetime.astimezone(datetime.now()))
     completed_at = Column(DateTime, nullable=True)
-    status = Column(String, default="PENDING")
+    status = Column(Enum(TaskStatus), default='pending')
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="tasks")
