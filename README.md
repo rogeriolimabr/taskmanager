@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Este é um sistema de gerenciamento de tarefas com autenticação/autorização.
+Este é um sistema de gerenciamento de tarefas com autenticação.
 A aplicação consiste em dois componentes principais:
 
 - Backend (FastAPI) - APIs RESTful para autenticação, autorização e gerenciamento de tareafas.
