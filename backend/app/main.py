@@ -23,6 +23,7 @@ app = FastAPI(
     title="Gerenciador de Tarefas",
     description="Backend para o gerenciador de tarefas",
     redoc_url="/documentation",
+    docs_url="/swagger",
     version="1.0.0",
     contact={
         "name": "Rogerio Lima",
@@ -45,11 +46,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-@app.get("/health")
+@app.get("/health", description="Verifica o status da aplicação.")
 def health_check():
     return {"status": "healthy"}
 
-@app.post("/api/login", response_model=schemas.Token)
+@app.post("/api/login", response_model=schemas.Token, description="Realiza o login do usuário e retorna um token de acesso.")
 def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(database.get_db)):
     user = auth.authenticate_user(db, user_login.email, user_login.password)
     if not user:
@@ -64,7 +65,7 @@ def login_for_access_token(user_login: schemas.UserLogin, db: Session = Depends(
     )
     return {"access_token": access_token, "token_type": "Bearer"}
 
-@app.post("/api/register", response_model=schemas.User, status_code=status.HTTP_201_CREATED)
+@app.post("/api/register", response_model=schemas.User, status_code=status.HTTP_201_CREATED, description="Cadastra um novo usuário.")
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
     db_user = auth.get_user(db, email=user.email)
     if db_user:
@@ -76,11 +77,11 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)
     db.refresh(db_user)
     return db_user
 
-@app.get("/api/me/", response_model=schemas.User)
+@app.get("/api/me/", response_model=schemas.User, description="Retorna os detalhes do usuário atualmente logado.")
 def read_users_me(current_user: schemas.User = Depends(auth.get_current_user)):
     return current_user
 
-@app.post("/api/tasks/", response_model=schemas.Task, status_code=status.HTTP_201_CREATED)
+@app.post("/api/tasks/", response_model=schemas.Task, status_code=status.HTTP_201_CREATED, description="Cria uma nova tarefa.")
 def create_task(task: schemas.TaskCreate, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(auth.get_current_user)):
     db_task = models.Task(**task.model_dump(), owner_id=current_user.id)
     db.add(db_task)
@@ -88,19 +89,19 @@ def create_task(task: schemas.TaskCreate, db: Session = Depends(database.get_db)
     db.refresh(db_task)
     return db_task
 
-@app.get("/api/tasks/", response_model=List[schemas.Task])
+@app.get("/api/tasks/", response_model=List[schemas.Task], description="Retorna uma lista de tarefas do usuário atual.")
 def read_tasks(skip: int = 0, limit: int = 10, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(auth.get_current_user)):
     tasks = db.query(models.Task).filter(models.Task.owner_id == current_user.id).offset(skip).limit(limit).all()
     return tasks
 
-@app.get("/api/tasks/{task_id}", response_model=schemas.Task)
+@app.get("/api/tasks/{task_id}", response_model=schemas.Task, description="Retorna os detalhes de uma tarefa específica.")
 def read_task(task_id: int, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(auth.get_current_user)):
     task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == current_user.id).first()
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
     return task
 
-@app.put("/api/tasks/{task_id}", response_model=schemas.Task)
+@app.put("/api/tasks/{task_id}", response_model=schemas.Task, description="Atualiza uma tarefa específica.")
 def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(auth.get_current_user)):
     db_task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == current_user.id).first()
     if db_task is None:
@@ -114,7 +115,7 @@ def update_task(task_id: int, task: schemas.TaskUpdate, db: Session = Depends(da
     db.refresh(db_task)
     return db_task
 
-@app.delete("/api/tasks/{task_id}", response_model=schemas.Task)
+@app.delete("/api/tasks/{task_id}", response_model=schemas.Task, description="Deleta uma tarefa específica.")
 def delete_task(task_id: int, db: Session = Depends(database.get_db), current_user: schemas.User = Depends(auth.get_current_user)):
     db_task = db.query(models.Task).filter(models.Task.id == task_id, models.Task.owner_id == current_user.id).first()
     if db_task is None:

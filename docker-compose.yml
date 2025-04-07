@@ -10,7 +10,6 @@ services:
       - ./backend/.env.docker
     networks:
       - internal
-      - external
     restart: unless-stopped
 
   frontend:
@@ -24,7 +23,6 @@ services:
       - ./frontend/.env
     networks:
       - internal
-      - external
     restart: unless-stopped
 
   db:
@@ -40,14 +38,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - internal
-      - external
     restart: unless-stopped
 
 networks:
   internal:
-    driver: bridge
-  external:
-    name: external_network
     driver: bridge
 
 volumes:
