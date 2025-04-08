@@ -46,7 +46,6 @@ task_manager/
 ### Pré-requisitos
 
 - Docker
-- Docker Compose
 
 ### Como Rodar a Aplicação
 
@@ -60,7 +59,7 @@ task_manager/
 2. Construa e inicie os containers Docker:
 
    ```sh
-   docker-compose up --build
+   docker compose up --build
    ```
 
 3. Acesse a aplicação:
@@ -88,7 +87,20 @@ A documentação da API será gerada automaticamente pelo FastAPI e estará disp
 
 ## Testes
 
-Instruções sobre como rodar os testes serão adicionadas em breve.
+1. Configure as variáveis de ambiente;
+
+2. Construa e inicie os containers:
+
+   ```sh
+      docker compose up --build
+   ```
+
+3. Execute os testes utilizando o PyTest:
+
+   ```sh
+      cd backend
+      pytest app/tests/test_main.py 
+   ```
 
 ## Deployment
 
