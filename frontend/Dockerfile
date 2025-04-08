@@ -16,6 +16,9 @@ RUN pnpm i
 # Copy the rest of the application code
 COPY . /app
 
+# Build the application
+RUN pnpm build
+
 # Expose the port the app runs on
 EXPOSE 3000
 

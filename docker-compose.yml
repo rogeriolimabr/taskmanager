@@ -3,11 +3,11 @@ services:
     build: ./backend
     container_name: backend
     ports:
-      - "8000:80"
+      - "81:8000"
     depends_on:
       - db
     env_file:
-      - ./backend/.env
+      - ./backend/.env.docker
     networks:
       - internal
     restart: unless-stopped
@@ -23,12 +23,13 @@ services:
       - ./frontend/.env
     networks:
       - internal
-      - external
     restart: unless-stopped
 
   db:
     image: postgres:latest
     container_name: db
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
@@ -41,9 +42,7 @@ services:
 
 networks:
   internal:
-    internal: true
-  external:
-    external: true
+    driver: bridge
 
 volumes:
   postgres_data:
