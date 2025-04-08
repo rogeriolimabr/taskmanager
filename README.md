@@ -64,7 +64,7 @@ task_manager/
 
 3. Acesse a aplicação:
    - A API backend estará disponível em `http://localhost:8000`.
-   - O Frontend estará disponível em `http://localhost:3000`.
+   - O Frontend estará disponível em `http://localhost`.
 
 ## Endpoints da API
 
