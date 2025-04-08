@@ -3,11 +3,11 @@ services:
     build: ./backend
     container_name: backend
     ports:
-      - "81:8000"
+      - "8000:8000"
     depends_on:
       - db
     env_file:
-      - ./backend/.env.docker
+      - ./backend/.env
     networks:
       - internal
     restart: unless-stopped

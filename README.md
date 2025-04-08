@@ -66,7 +66,6 @@ task_manager/
 3. Acesse a aplicação:
    - A API backend estará disponível em `http://localhost:8000`.
    - O Frontend estará disponível em `http://localhost:3000`.
-   - O banco de dados estará disponível na porta :1337, somente para o backend.
 
 ## Endpoints da API
 
@@ -85,7 +84,7 @@ task_manager/
 
 ## Documentação da API
 
-A documentação da API será gerada automaticamente pelo FastAPI e estará disponível em `http://localhost:8000/swagger`.
+A documentação da API será gerada automaticamente pelo FastAPI e estará disponível em `http://localhost:8000/documentation` (Redocly) ou `http://localhost:8000/swagger` (Swagger).
 
 ## Testes
 
