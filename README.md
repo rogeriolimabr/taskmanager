@@ -125,7 +125,7 @@ aws ecr create-repository --repository-name frontend
 aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $(aws sts get-caller-identity --query Account --output text).dkr.ecr.us-east-1.amazonaws.com
 
 # Construir as imagens
-docker-compose build
+docker compose build
 
 # Taguear imagens para o ECR
 aws_account_id=$(aws sts get-caller-identity --query Account --output text)
