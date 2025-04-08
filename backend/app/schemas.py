@@ -4,8 +4,8 @@ from datetime import datetime
 from enum import Enum
 
 class TaskStatus(Enum):
-    PENDING = 'pending'
-    COMPLETED = 'completed'
+    PENDING = 'PENDING'
+    COMPLETED = 'COMPLETED'
 
 class TaskBase(BaseModel):
     title: str
@@ -17,7 +17,7 @@ class TaskCreate(TaskBase):
 class TaskUpdate(BaseModel):
     title: Optional[str] = None
     description: Optional[str] = None
-    status: TaskStatus
+    status: Optional[TaskStatus] = None
 
     class ConfigDict:
         use_enum_values = True

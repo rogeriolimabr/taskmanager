@@ -25,7 +25,7 @@ class Task(Base):
     description = Column(String, index=True)
     created_at = Column(DateTime, default=datetime.astimezone(datetime.now()))
     completed_at = Column(DateTime, nullable=True)
-    status = Column(Enum(TaskStatus), default='pending')
+    status = Column(Enum(TaskStatus), default=TaskStatus.PENDING)
     owner_id = Column(Integer, ForeignKey("users.id"))
 
     owner = relationship("User", back_populates="tasks")
